@@ -11,9 +11,10 @@ from config import DB_PARAMS
 app = Flask(__name__)
 
 # ============= DATABASE OPERATIONS =============
+# All the SQL stuff happens here - inserting data, pulling it back out, etc.
 
 def execute_query(sql, params=None, fetch=False):
-    """Execute a database query and optionally fetch results."""
+    """Run any SQL query - useful to keep this centralized so we don't repeat code"""  
     try:
         with psycopg2.connect(**DB_PARAMS) as conn:
             with conn.cursor() as cur:
@@ -27,10 +28,13 @@ def execute_query(sql, params=None, fetch=False):
         return None
 
 def init_db():
-    """Initialize the water_levels table with geospatial support."""
+    """Set up the database tables and PostGIS for map stuff - run this once at startup"""
+    # First, enable PostGIS extension for geospatial queries (maps, coordinates, etc)
     sql_postgis = "CREATE EXTENSION IF NOT EXISTS postgis;"
     execute_query(sql_postgis)
     
+    # Create the main table - stores every sensor reading with location coordinates
+    # location column uses PostGIS POINT to store lat/lon as a single geometry for faster queries
     sql_create = """
     CREATE TABLE IF NOT EXISTS water_levels (
         id SERIAL PRIMARY KEY,
@@ -47,13 +51,17 @@ def init_db():
     ALTER TABLE water_levels ADD COLUMN IF NOT EXISTS latitude NUMERIC(10, 6);
     ALTER TABLE water_levels ADD COLUMN IF NOT EXISTS longitude NUMERIC(10, 6);
     ALTER TABLE water_levels ADD COLUMN IF NOT EXISTS location GEOMETRY(POINT, 4326);
+    ALTER TABLE water_levels ADD COLUMN IF NOT EXISTS power_consumption_watts FLOAT;
+    ALTER TABLE water_levels ADD COLUMN IF NOT EXISTS is_simulated BOOLEAN DEFAULT FALSE;
     """
     
+    # Indexes speed up searches - one for location-based queries, one for time-based sorting
     sql_indexes = """
     CREATE INDEX IF NOT EXISTS idx_location ON water_levels USING GIST(location);
     CREATE INDEX IF NOT EXISTS idx_recorded_at ON water_levels(recorded_at DESC);
     """
     
+    # Run all the setup commands
     execute_query(sql_create)
     execute_query(sql_alter)
     execute_query(sql_indexes)
@@ -62,7 +70,9 @@ def init_db():
     print("✅ Table 'water_levels' with geospatial support is ready!")
 
 def export_to_geojson(limit=100):
-    """Export water level data as GeoJSON for QGIS."""
+    """Convert sensor data to GeoJSON format - useful for QGIS and mapping tools"""
+    # Using PostgreSQL's json_build_object to structure the data as proper GeoJSON
+    # This returns coordinates and properties in the format QGIS expects
     sql = f"""
     SELECT json_build_object(
         'type', 'FeatureCollection',
@@ -95,16 +105,20 @@ def export_to_geojson(limit=100):
         return None
 
 # ============= API ENDPOINTS =============
+# These are the web endpoints that sensors and the frontend talk to
 
 @app.route('/api/water-level', methods=['POST'])
 def receive_data():
-    """Receive water level data from ESP32 sensor."""
+    """Accept incoming sensor data and store it in the database"""
     try:
         data = request.get_json()
         sensor_id = data.get('sensor_id')
         water_level = data.get('water_level_cm')
         latitude = data.get('latitude')
         longitude = data.get('longitude')
+        power_consumption = data.get('power_consumption_watts', 0.0)
+        mcu_timestamp = data.get('mcu_timestamp')
+        is_simulated = data.get('is_simulated', False)
         
         if not sensor_id or water_level is None:
             return jsonify({"error": "Missing sensor_id or water_level_cm"}), 400
@@ -114,14 +128,14 @@ def receive_data():
                 if latitude and longitude:
                     cur.execute("""
                         INSERT INTO water_levels 
-                        (sensor_id, water_level_cm, latitude, longitude, location) 
-                        VALUES (%s, %s, %s, %s, ST_SetSRID(ST_MakePoint(%s, %s), 4326));
-                    """, (sensor_id, water_level, latitude, longitude, longitude, latitude))
+                        (sensor_id, water_level_cm, latitude, longitude, location, power_consumption_watts, recorded_at, is_simulated) 
+                        VALUES (%s, %s, %s, %s, ST_SetSRID(ST_MakePoint(%s, %s), 4326), %s, %s, %s);
+                    """, (sensor_id, water_level, latitude, longitude, longitude, latitude, power_consumption, mcu_timestamp, is_simulated))
                 else:
                     cur.execute("""
-                        INSERT INTO water_levels (sensor_id, water_level_cm) 
-                        VALUES (%s, %s);
-                    """, (sensor_id, water_level))
+                        INSERT INTO water_levels (sensor_id, water_level_cm, power_consumption_watts, recorded_at, is_simulated) 
+                        VALUES (%s, %s, %s, %s, %s);
+                    """, (sensor_id, water_level, power_consumption, mcu_timestamp, is_simulated))
                 conn.commit()
         
         return jsonify({"status": "success", "message": "Data saved!"}), 201
@@ -130,14 +144,34 @@ def receive_data():
 
 @app.route('/api/water-level', methods=['GET'])
 def get_data():
-    """Get latest 10 water level readings."""
+    """Fetch sensor readings to show on the dashboard
+    
+    Query parameters:
+    - limit: Number of recent readings to return (default: 100, max: 1000)
+    - source: Filter by data source - 'real' (hardware only), 'simulated' (simulator only), 'all' (default)
+    """
     try:
+        limit = request.args.get('limit', default=100, type=int)
+        limit = max(10, min(limit, 1000))
+        source = request.args.get('source', default='all').lower()
+        
         with psycopg2.connect(**DB_PARAMS) as conn:
             with conn.cursor() as cur:
-                cur.execute("""
-                    SELECT id, sensor_id, water_level_cm, latitude, longitude, recorded_at 
-                    FROM water_levels ORDER BY recorded_at DESC LIMIT 10;
-                """)
+                if source == 'real':
+                    cur.execute("""
+                        SELECT id, sensor_id, water_level_cm, latitude, longitude, power_consumption_watts, recorded_at 
+                        FROM water_levels WHERE is_simulated = FALSE ORDER BY recorded_at DESC LIMIT %s;
+                    """, (limit,))
+                elif source == 'simulated':
+                    cur.execute("""
+                        SELECT id, sensor_id, water_level_cm, latitude, longitude, power_consumption_watts, recorded_at 
+                        FROM water_levels WHERE is_simulated = TRUE ORDER BY recorded_at DESC LIMIT %s;
+                    """, (limit,))
+                else:
+                    cur.execute("""
+                        SELECT id, sensor_id, water_level_cm, latitude, longitude, power_consumption_watts, recorded_at 
+                        FROM water_levels ORDER BY recorded_at DESC LIMIT %s;
+                    """, (limit,))
                 rows = cur.fetchall()
         
         results = [{
@@ -146,7 +180,8 @@ def get_data():
             "water_level_cm": float(row[2]),
             "latitude": float(row[3]) if row[3] else None,
             "longitude": float(row[4]) if row[4] else None,
-            "recorded_at": row[5].strftime("%Y-%m-%d %H:%M:%S")
+            "power_consumption_watts": float(row[5]) if row[5] else 0.0,
+            "recorded_at": row[6].strftime("%Y-%m-%d %H:%M:%S")
         } for row in rows]
         
         return jsonify({"status": "success", "data": results}), 200
@@ -155,7 +190,7 @@ def get_data():
 
 @app.route('/api/export/geojson', methods=['GET'])
 def export_geojson():
-    """Export sensor data as GeoJSON for QGIS."""
+    """Let users download all sensor data in GeoJSON format"""
     try:
         geojson_data = export_to_geojson(limit=100)
         if geojson_data:

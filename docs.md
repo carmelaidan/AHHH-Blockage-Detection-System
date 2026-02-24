@@ -1,45 +1,42 @@
-# 🌊 Hydro-Hazard Helper - Complete Documentation
+# 🌊 A.H.H.H. Blockage Detection System - Complete Documentation
 
 ## Project Overview
-IoT-based flood monitoring system using ESP32, HC-SR04 sensor, Flask API, PostgreSQL, and Streamlit dashboard with QGIS integration.
+IoT-based storm drain blockage detection using Arduino UNO R4, SIM7600 GSM/GPS module, A02YYUW ultrasonic sensor, Flask API, PostgreSQL, and Streamlit dashboard with QGIS integration.
 
 ## System Architecture
 ```
-ESP32 Sensor → Flask Backend → PostgreSQL Database → Streamlit Frontend
-  (hardware.ino)  (backend.py)   (database.py)    (frontend.py)
+Arduino UNO R4 + SIM7600 → Flask Backend → PostgreSQL Database → Streamlit Frontend
+      (hardware.ino)        (backend.py)     [initialized]      (frontend.py)
 ```
+Database automatically initializes when backend.py starts.
 
 ## Quick Start
 
-### 1. Initialize Database (First Time Only)
-```powershell
-python database.py
-```
+Database initializes automatically when backend starts - no manual setup needed!
 
-### 2. Start Backend API (Terminal 1)
+### 1. Start Backend API (Terminal 1)
 ```powershell
 python backend.py
 ```
 
-### 3. Start Frontend Dashboard (Terminal 2)
+### 2. Start Frontend Dashboard (Terminal 2)
 ```powershell
 streamlit run frontend.py
 ```
 
-### 4. Test with Simulator (Terminal 3)
+### 3. Test with Simulator (Terminal 3)
 ```powershell
 python simulator.py
 # Run 5-10 times to generate test data
 ```
 
-## 5 Core Files
+## 4 Core Files
 
 | File | Purpose |
-|------|---------|
-| **backend.py** | Flask REST API + PostgreSQL database operations |
+|------|----------|
+| **backend.py** | Flask REST API + PostgreSQL database operations (includes auto-init) |
 | **frontend.py** | Streamlit web dashboard with maps & charts |
-| **database.py** | Database initialization script |
-| **hardware.ino** | ESP32 firmware for HC-SR04 sensor |
+| **hardware.ino** | Arduino UNO R4 firmware for SIM7600 + A02YYUW sensor |
 | **docs.md** | Complete documentation (this file) |
 
 ## Supporting Files
@@ -68,48 +65,46 @@ python simulator.py
 ## Hardware Setup
 
 ### Components
-- ESP32 Development Board
-- HC-SR04 Ultrasonic Sensor
-- 4x Jumper Wires
-- 1kΩ + 2kΩ Resistors (voltage divider)
+- Arduino UNO R4 WiFi Board
+- SIM7600 GSM/GPS Module (Serial1)
+- A02YYUW Ultrasonic Sensor (UART, Serial1 shared via demux)
+- INA219 DC Current/Power Sensor (I2C: SDA=A4, SCL=A5)
+- DS3231 Real-Time Clock (I2C: SDA=A4, SCL=A5)
+- 4x Jumper Wires + I2C Pull-up Resistors (4.7kΩ)
 
-### Wiring
+### Pin Configuration
 ```
-HC-SR04 VCC → ESP32 5V
-HC-SR04 GND → ESP32 GND
-HC-SR04 TRIG → ESP32 GPIO5
-HC-SR04 ECHO → ESP32 GPIO18 (via voltage divider)
+SIM7600:  RX→Pin2 (GSM_RX), TX→Pin3 (GSM_TX)
+A02YYUW:  UART output → Serial1
+INA219:   SDA→A4, SCL→A5 (I2C Address 0x40)
+DS3231:   SDA→A4, SCL→A5 (I2C Address 0x68)
+LED:      Pin13 for status indication
 ```
 
 ### Firmware Upload
 1. Open hardware.ino in Arduino IDE
-2. Update WiFi credentials and server IP
-3. Select "ESP32 Dev Module" board
+2. Update server IP and sensor location coordinates
+3. Select "Arduino UNO R4 WiFi" board
 4. Click Upload
 
 ## Testing Phases
 
-**Phase 1:** Database
-```powershell
-python database.py
-```
-
-**Phase 2:** Backend
+**Phase 1:** Backend (Database auto-initializes)
 ```powershell
 python backend.py
 ```
 
-**Phase 3:** Frontend
+**Phase 2:** Frontend
 ```powershell
 streamlit run frontend.py
 ```
 
-**Phase 4:** Simulator
+**Phase 3:** Simulator
 ```powershell
 python simulator.py
 ```
 
-**Phase 5:** Verification
+**Phase 4:** Verification
 - Open http://localhost:8501
 - Should see real-time metrics, map, and charts
 
@@ -119,16 +114,16 @@ python simulator.py
 |---------|----------|
 | "Cannot connect to backend" | Run `python backend.py` in Terminal 1 |
 | No data showing | Run `python simulator.py` multiple times |
-| Database error | Run `python database.py` to reinitialize |
+| Database error | Restart `python backend.py` to reinitialize |
 | Import error | Run `pip install -r requirements.txt` |
 
 ## For Your Thesis
 
 **Files to Present:**
-1. **backend.py** - Flask API and database
-2. **frontend.py** - Dashboard visualization
-3. **hardware.ino** - ESP32 sensor code
-4. **docs.md** - Documentation
+1. **backend.py** - Flask API and PostgreSQL integration
+2. **frontend.py** - A.H.H.H. Dashboard visualization
+3. **hardware.ino** - Arduino UNO R4 sensor & SIM7600 code
+4. **docs.md** - Complete documentation
 
 **Files Not Required:**
 - simulator.py, config.py, requirements.txt (supporting only)

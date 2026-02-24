@@ -1,7 +1,7 @@
 import os
 from dotenv import load_dotenv
 
-# Load the database password from the hidden .env file
+# Load database credentials from .env (keep passwords out of version control!)
 load_dotenv()
 
 DB_PARAMS = {
@@ -12,6 +12,5 @@ DB_PARAMS = {
     "port": "5432"
 }
 
-# The URL where our Flask API is listening
-# Make sure there are no spaces in the variable name 'API_URL'
+# Flask API endpoint - sensors and frontend talk to this
 API_URL = "http://127.0.0.1:5000/api/water-level"
