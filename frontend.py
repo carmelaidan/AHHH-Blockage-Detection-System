@@ -17,14 +17,14 @@ st.set_page_config(page_title="A.H.H.H. Blockage Detection", page_icon="🌊", l
 st.title("A.H.H.H. Blockage Detection System")
 st.subheader("Real-Time Storm Drain Monitoring with Power Analysis")
 
-# Basin specs - it's 18.7 inches (47.5 cm) tall
-# We use percentages of capacity to set alert levels instead of fixed cm values
-# This way it scales based on the actual basin size (47.5 cm)
+# Basin specs - 18.7 inches (47.5 cm) tall per BAMBI.pdf spec
+# Multi-level classification: 25%, 50%, 75% escalation per BAMBI research methodology
+# Per spec: thresholds are percentage-based for scalability and interpretation
 BASIN_HEIGHT_CM = 47.5
-# These are capacity percentages - when to warn/alert users
-WARN_PCT = 0.25   # 25% full = 11.875 cm
-ALERT_PCT = 0.50  # 50% full = 23.75 cm  
-DANGER_PCT = 0.75 # 75% full = 35.625 cm - getting really full now
+# Alert escalation levels per BAMBI.pdf specification
+WARN_PCT = 0.25   # 25% capacity = 11.875 cm = 4.7" (blockage detected)
+ALERT_PCT = 0.50  # 50% capacity = 23.75 cm = 9.35" (escalation level)
+DANGER_PCT = 0.75 # 75% capacity = 35.625 cm = 14.025" (critical level)
 
 WARN_THRESHOLD = BASIN_HEIGHT_CM * WARN_PCT
 ALERT_THRESHOLD = BASIN_HEIGHT_CM * ALERT_PCT
@@ -133,8 +133,15 @@ if raw_data:
     df['recorded_at'] = pd.to_datetime(df['recorded_at'])
     df = df.sort_values('recorded_at')
     
-    # Calculate capacity percentage once for all rows
-    df['capacity_pct'] = (df['water_level_cm'] / BASIN_HEIGHT_CM) * 100
+    # Ensure alert fields exist (for compatibility with older data)
+    if 'capacity_percentage' not in df.columns:
+        df['capacity_percentage'] = (df['water_level_cm'] / BASIN_HEIGHT_CM) * 100
+    if 'alert_status' not in df.columns:
+        df['alert_status'] = False
+    if 'alert_type' not in df.columns:
+        df['alert_type'] = 'normal_reading'
+    
+    df['capacity_pct'] = df['capacity_percentage']
     
     latest = df.iloc[-1]
     status_text, status_color = get_status_color(latest['capacity_pct'])
@@ -159,13 +166,33 @@ if raw_data:
     
     st.markdown("---")
     
-    # Alert section - show warnings based on capacity percentage
-    if latest['capacity_pct'] >= DANGER_PCT * 100:
-        st.error(f"🔴 DANGER! Basin at {latest['capacity_pct']:.1f}% capacity ({latest['water_level_cm']:.1f} cm)")
-    elif latest['capacity_pct'] >= ALERT_PCT * 100:
-        st.warning(f"🟠 ALERT! Basin at {latest['capacity_pct']:.1f}% capacity ({latest['water_level_cm']:.1f} cm)")
-    elif latest['capacity_pct'] >= WARN_PCT * 100:
-        st.warning(f"🟡 WARNING! Basin at {latest['capacity_pct']:.1f}% capacity ({latest['water_level_cm']:.1f} cm)")
+    # Alert section - show system status based on both capacity and alert_status per BAMBI.pdf spec
+    # Display hardware-triggered alerts vs capacity-based alerts
+    col_alert1, col_alert2 = st.columns([2, 1])
+    
+    with col_alert1:
+        if latest.get('alert_status', False):
+            alert_type = latest.get('alert_type', 'unknown')
+            if alert_type == 'blockage_detected':
+                st.error(f"🚨 BLOCKAGE DETECTED! ({latest['capacity_pct']:.1f}% capacity) - Type: blockage_detected")
+            elif alert_type == 'blockage_cleared':
+                st.success(f"✅ BLOCKAGE CLEARED (Regularization Alert) - Type: blockage_cleared")
+            else:
+                st.info(f"📊 Normal Reading - Capacity: {latest['capacity_pct']:.1f}%")
+        else:
+            # Capacity-based warnings
+            if latest['capacity_pct'] >= DANGER_PCT * 100:
+                st.error(f"🔴 CRITICAL CAPACITY! Basin at {latest['capacity_pct']:.1f}% ({latest['water_level_cm']:.1f} cm)")
+            elif latest['capacity_pct'] >= ALERT_PCT * 100:
+                st.warning(f"🟠 HIGH LEVEL! Basin at {latest['capacity_pct']:.1f}% ({latest['water_level_cm']:.1f} cm)")
+            elif latest['capacity_pct'] >= WARN_PCT * 100:
+                st.warning(f"🟡 ELEVATED LEVEL! Basin at {latest['capacity_pct']:.1f}% ({latest['water_level_cm']:.1f} cm)")
+            else:
+                st.success(f"🟢 NORMAL - Basin at {latest['capacity_pct']:.1f}% capacity")
+    
+    with col_alert2:
+        st.metric("Alert Status", "🚨 ACTIVE" if latest.get('alert_status', False) else "✓ Normal", 
+                 latest.get('alert_type', 'N/A'))
     
     st.markdown("---")
     
@@ -214,8 +241,23 @@ if raw_data:
     
     st.markdown("---")
     
+    # Alert history section per BAMBI.pdf metrics (alert response time tracking)
+    st.subheader("🚨 Alert History (BAMBI.pdf Spec)")
+    alerts_df = df[df['alert_status'] == True].copy() if 'alert_status' in df.columns else pd.DataFrame()
+    
+    if not alerts_df.empty:
+        alerts_display = alerts_df[['recorded_at', 'sensor_id', 'water_level_cm', 'alert_type', 'capacity_percentage']].copy()
+        alerts_display['recorded_at'] = alerts_display['recorded_at'].dt.strftime('%Y-%m-%d %H:%M:%S')
+        alerts_display = alerts_display.sort_values('recorded_at', ascending=False)
+        st.dataframe(alerts_display, use_container_width=True, hide_index=True)
+        st.metric("Total Alerts", len(alerts_df))
+    else:
+        st.info("✓ No alerts recorded during this period")
+    
+    st.markdown("---")
+    
     # Data table
-    st.subheader("🗂️ Logs")
+    st.subheader("🗂️ All Readings")
     display_df = df[['recorded_at', 'sensor_id', 'water_level_cm']].copy()
     display_df['recorded_at'] = display_df['recorded_at'].dt.strftime('%Y-%m-%d %H:%M:%S')
     # Show newest first

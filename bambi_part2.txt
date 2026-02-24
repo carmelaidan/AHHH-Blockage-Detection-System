@@ -1,0 +1,263 @@
+
+
+========== PAGE 15 ==========
+Conceptual Framework
+The research is built upon a conceptual framework primarily rooted in the
+Modified Manning’s Equation. The equation serves as the fundamental basis for
+understanding hydraulic principles and informing system design. This equation
+guides the selection of sensors, hardware configuration, data requirements, and
+testing procedures. Systems Theory provides a strong foundation for organizing
+and integrating the various subsystems involved in blockage detection. This theory
+facilitates the design and assessment of two key prototype systems: the
+experimental AHHH Blockage Detection System and the Standardized Hardware
+Benchmark System (SHBS), adapted from Rajput et al. (2025), which serves as a
+comparative benchmark.
+To enhance system capabilities, the framework integrates Internet of Things
+(IoT) and Geographic Information Systems (GIS) technologies. IoT enables
+continuous, remote monitoring and data collection, while GIS provides spatial
+visualization and mapping of blockage occurrences. The AHHH system leverages
+both IoT and GIS, while the SHBS primarily relies on IoT with SMS alerts. The
+performance of both systems is rigorously evaluated under controlled laboratory
+conditions, simulating real-world scenarios. Key performance metrics include recall
+score, precision, data rate, electrical power consumption, and alert response time.
+Statistical analysis, using descriptive statistics and paired t-tests, will be employed
+to determine significant performance differences between the systems.
+14
+
+========== PAGE 16 ==========
+By anchoring the system design in the well-established Modified Manning's
+Equation, the researchers ensure a sound understanding of drainage flow
+dynamics. The application of Systems Theory enables a holistic approach to
+integrating and optimizing the various components of the blockage detection
+system. Furthermore, the incorporation of IoT and GIS technologies provides real-
+time monitoring, spatial visualization, and enhanced decision-making capabilities.
+Figure 1
+Conceptual Framework of the Study
+Research Problem
+This study evaluates the performance efficacy and efficiency of the novel
+IoT- and GIS-based AHHH Blockage Detection System against a Standardized
+15
+
+========== PAGE 17 ==========
+Hardware Benchmark System (SHBS) to quantify their differences in detection
+accuracy, operational efficiency, and alert responsiveness for strengthening urban
+resilience and reducing flood risks.
+1. What is the mean performance of the SHBS, implementing the logic of
+Rajput et al. (2025), in detecting potential drainage blockages based on
+water level measurements and obstruction presence, in terms of:
+1.1. recall score (x̄ %);
+1.2. precision (x̄%);
+1.3. data rate (x̄ bits/s);
+1.4. electrical power consumption (x̄ Watts); and
+1.5. alert response time (x̄ seconds)?
+2. What is the mean performance of the AHHH Blockage Detection
+(Automated Hydro Hazard Helper in Blockage Detection) System, in
+detecting potential blockages based on water level measurements and the
+presence of obstructions, in terms of:
+2.1. recall score (x̄ %);
+2.2. precision (x̄%);
+2.3. data rate (x̄ bits/s);
+2.4. electrical power consumption (x̄ Watts); and
+2.5. alert response time (x̄ seconds)?
+16
+
+========== PAGE 18 ==========
+3. Is there a statistically significant difference between the AHHH Blockage
+System and the Standardized Hardware Benchmark System (SHBS) across
+the experimental conditions in terms of:
+3.1. recall score (x̄ %);
+3.2. precision (x̄%);
+3.3. data rate (x̄ bits/s);
+3.4. electrical power consumption (x̄ Watts); and
+3.5. alert response time (x̄ seconds)?
+Hypotheses
+Detection Efficacy: Recall Score
+H There is no statistically significant difference in the mean Recall
+O 1
+Score of the AHHH Blockage System and the SHBS.
+H There is a statistically significant difference in the mean Recall Score
+A 1
+of the AHHH Blockage System and the SHBS.
+Detection Efficacy: Precision
+H There is no statistically significant difference in the mean Precision
+O 2
+of the AHHH Blockage System and the SHBS.
+H There is a statistically significant difference in the mean Precision of
+A 2
+the AHHH Blockage System and the SHBS.
+17
+
+========== PAGE 19 ==========
+Operational Efficiency: Data Rate
+H There is no statistically significant difference in the mean Average
+O 3
+Data Rate between the AHHH Blockage System and the SHBS.
+H There is a statistically significant difference in the mean Data Rate
+A 3
+between the AHHH Blockage System and the SHBS.
+Operational Efficiency: Electrical Power Consumption
+H There is no statistically significant difference in the mean Electrical
+O 4
+Power Consumption between the AHHH Blockage System and the SHBS.
+H There is a statistically significant difference in the mean Electrical
+A 4
+Power Consumption between the AHHH Blockage System and the SHBS.
+Responsiveness: Alert Response Time
+H There is no statistically significant difference in the mean Alert
+O 5
+Response Time between the AHHH Blockage System and the SHBS.
+H There is a statistically significant difference in the mean Alert
+A 5
+Response Time between the AHHH Blockage System and the SHBS.
+Scope, Delimitations, and Limitations
+This study develops and assesses an IoT and GIS-based early warning
+system for storm drain blockages, addressing the current lack of effective, real-
+18
+
+========== PAGE 20 ==========
+time monitoring that contributes to increased urban flooding. To combat this issue,
+the study will define the IoT sensors, GIS technology, system designs, and
+performance metrics required for blockage detection, and develop and
+comparatively evaluate two system designs against conventional methods. By
+providing a more effective means of early detection and response, this research
+aims to enhance urban resilience and mitigate flood risks.
+This study evaluates a blockage detection prototype's performance,
+focusing on key indicators: recall score, precision, data rate, electrical power
+consumption, and alert response time, assessed via individual t-tests. Detection
+efficacy, measured as recall and precision scores, assesses the system's ability to
+correctly identify blockages while minimizing both false negatives (recall) and false
+positives (precision). Beyond accuracy, electrical power consumption indicates the
+system's energy efficiency and reflects its operational sustainability. Data
+communication is assessed by the data rate (bits/s), which measures the speed at
+which sensor readings are sent to the central unit. Finally, alert response time
+(seconds) indicates how quickly blockages trigger notifications, gauging
+responsiveness. Statistical significance is evaluated using individual t-tests to
+ensure the reliability of the results.
+To validate the practical application of the prototype, a true experimental
+design will be employed, comparing a fully functional hardware prototype
+developed from Rajput's software-based model with the AHHH Blockage Detection
+System. The system continuously monitors water levels in storm drains using
+19
+
+========== PAGE 21 ==========
+ultrasonic sensors. These sensors transmit data wirelessly to a central processing
+unit, where the data is analyzed to detect deviations from normal water levels.
+Environmental variables, including rainfall, soil composition, and ambient water
+levels, are also not included in the experimental design due to challenges in
+replicating these conditions in a laboratory setting. Testing is confined to simulated
+catch basins and storm drains within controlled laboratory settings, owing to health
+and safety considerations and limited accessibility to real-world drainage systems.
+Other theoretical models and existing prototypes are not reviewed, since the main
+goal is to assess the performance of two system designs. The systems detect
+obstructions and monitor water levels, but do not identify the specific nature or
+cause of blockages, as this would require advanced, costly tools. The study's
+communication is limited to GSM, the most cost-effective option in Metro Manila.
+This constraint allows focused evaluation of transmission speed and alert
+response. These delimitations ensure a targeted evaluation of the prototype's core
+performance.
+This study's findings are limited by several factors that affect their real-world
+applicability. The Arduino-based prototype and controlled environment testing may
+not accurately reflect performance in actual storm drains, where unpredictable
+debris and weather conditions can affect sensor readings and reliability.
+Furthermore, the accuracy of ultrasonic sensors is susceptible to environmental
+factors, such as temperature, humidity, and debris accumulation, which can lead
+to inaccurate data. In addition to sensor-related limitations, communication
+20
+
+========== PAGE 22 ==========
+constraints exist; GSM communication can introduce potential delays due to weak
+signals or network congestion, and GPS accuracy is inherently limited by urban
+interference. The limitations of the Arduino platform, including its processing power
+and memory capacity, limit advanced data-handling capabilities. Long-term
+durability remains uncertain, and limited funding and timeframe further restricted
+the study's scope.
+Significance of the Study
+Urban drainage issues are increasing in the Philippines, especially in Metro
+Manila, making innovative drainage management essential. This study addresses
+the need for proactive drainage blockage detection by using real-time ultrasonic,
+IoT, and GIS technologies, offering a cost-effective, scalable solution for early
+warning and enhanced monitoring of drainage systems.
+This study holds a significant theoretical and methodological value. From a
+theoretical perspective, this study examines the understanding of urban flooding
+and drainage management. It illustrates how ultrasonic water-level measurements
+can serve as indirect indicators of blockages. Moreover, it detects the actual
+presence of blockages for validation, incorporating IoT and GIS technologies for
+real-time monitoring and spatial data analysis. Through a performance evaluation,
+this research supports technology-driven approaches to disaster risk reduction.
+Unlike traditional methods, it relies on periodic manual inspections or less frequent
+data collection. This research builds upon and refines existing theories of urban
+21
+
+========== PAGE 23 ==========
+hydrology and disaster risk reduction. It does so by introducing real-time data
+analytics to significantly improve predictive accuracy, enhancing models such as
+the Rational Method and HEC-HMS. In terms of methodology, this study
+establishes a comparative framework to check and assess the performance of the
+AHHH Blockage Detection System. Validation is conducted through quantitative
+metrics, including recall scores, precision, electrical power consumption (W), data
+rate (bps), and alert latency (seconds).
+This framework offers a cost-effective and scalable way to evaluate early
+warning systems, making it suitable for municipalities with limited resources. This
+research presents a method that can be repeated in future efforts to develop early
+warning systems for urban areas at risk of flooding. This study will benefit several
+key stakeholders:
+Local Government Units (LGUs). Early warning systems play a crucial
+role in the Philippines to lessen the effects of typhoons and heavy rain. The
+systems enable quick responses with SMS alerts and barangay notifications. This
+helps communities become more resilient against disasters and ensures the public
+is quickly informed, which improves safety and preparedness. Local Government
+Units (LGUs), including the Municipal Engineering Office, the Disaster Risk
+Reduction and Management Office (DRRMO), and the Barangay Disaster Risk
+Reduction and Management Committee (BDRRMC), play a crucial role in leading
+disaster preparedness, response, and recovery efforts at the local level.
+22
+
+========== PAGE 24 ==========
+Using the prototype gives local government units (LGUs) important
+information about the drainage system. This helps them plan better for city
+improvements. Financially, floods cause about ₱50 million in property damage
+each year, affecting buildings, roads, and utilities. Research shows that early
+warning systems and prompt action can reduce this damage by up to 30% (UNEP,
+2025), amounting to around ₱15 million in prevented losses each year. In contrast,
+installing a real-time drainage monitoring system would cost about ₱3 million, plus
+an additional ₱500,000 annually for maintenance and operations. Their role as first
+responders underscores their importance to community safety and swift
+emergency response.
+General Public / Communities in Flood-Prone Areas. In the Philippines,
+early warning systems are vital for mitigating the annual threat of typhoons and
+heavy rainfall. These systems facilitate timely evacuations, protect property, and
+promote preventive measures to reduce flood damage. For homeowners, alerts
+can save ₱10,000 per incident in Metro Manila and ₱3,000-₱5,000 in provincial
+cities. In Kabacan, North Cotabato, a single flood inflicted over ₱20 million in
+damages (Mag-aso, 2018), highlighting the need for preparedness.
+Early warning systems also shield livelihoods, businesses, and local
+economies by preventing damage and minimizing downtime. They improve quality
+of life by enhancing sanitation and reducing waterborne diseases. The CDC (2025)
+reports an increase in leptospirosis cases after floods, likely due to exposure to
+contaminated water. However, studies indicate that improving drainage and
+23
+
+========== PAGE 25 ==========
+reducing contact with floodwaters can cut transmission risk by up to 70% in high-
+risk areas. SMS alerts and barangay notifications allow for quicker responses,
+boosting community resilience against future disasters.
+National Government Agencies. Real-time drainage monitoring helps
+national institutions like the DPWH and transportation authorities by improving
+disaster resilience, supporting data-driven policy, fostering innovation, and
+encouraging knowledge sharing. For transportation, it boosts safety through
+proactive planning, better resource allocation (which could improve by 10%), and
+fewer disruptions. The system allows real-time tracking of obstructions and
+flooding, enabling timely preventive actions (Revised Administrative Code, 1987).
+It supports the Philippine Disaster Risk Reduction and Management Act of 2010
+(RA 10121) and the UN's "Early Warnings for All" initiative (UN, 2022), both of
+which promote early warning systems to reduce vulnerability. The findings can
+influence national drainage policy, disaster risk reduction guidelines, and the 2030
+Agenda/Sendai Framework (UN, 2022). This study also encourages local
+innovation and collaboration between governments for disaster management.
+Technology Providers and Private Sector Companies. Technology
+providers, private companies, and public utilities gain real-time drainage
+monitoring. The system sends timely alerts and allows quick responses to
+blockages. This helps residents avoid dangers such as waterborne diseases and
+property damage. Effective early warning systems can reduce flood-related health
+issues by 25% (World Health Organization [WHO], 2019). It builds community
+24

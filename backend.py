@@ -53,6 +53,9 @@ def init_db():
     ALTER TABLE water_levels ADD COLUMN IF NOT EXISTS location GEOMETRY(POINT, 4326);
     ALTER TABLE water_levels ADD COLUMN IF NOT EXISTS power_consumption_watts FLOAT;
     ALTER TABLE water_levels ADD COLUMN IF NOT EXISTS is_simulated BOOLEAN DEFAULT FALSE;
+    ALTER TABLE water_levels ADD COLUMN IF NOT EXISTS alert_status BOOLEAN DEFAULT FALSE;
+    ALTER TABLE water_levels ADD COLUMN IF NOT EXISTS alert_type VARCHAR(50);
+    ALTER TABLE water_levels ADD COLUMN IF NOT EXISTS capacity_percentage NUMERIC(5, 2);
     """
     
     # Indexes speed up searches - one for location-based queries, one for time-based sorting
@@ -109,7 +112,7 @@ def export_to_geojson(limit=100):
 
 @app.route('/api/water-level', methods=['POST'])
 def receive_data():
-    """Accept incoming sensor data and store it in the database"""
+    """Accept incoming sensor data per BAMBI.pdf spec and store in database"""
     try:
         data = request.get_json()
         sensor_id = data.get('sensor_id')
@@ -119,57 +122,87 @@ def receive_data():
         power_consumption = data.get('power_consumption_watts', 0.0)
         mcu_timestamp = data.get('mcu_timestamp')
         is_simulated = data.get('is_simulated', False)
+        alert_status = data.get('alert_status', False)
+        alert_type = data.get('alert_type', 'normal_reading')
         
         if not sensor_id or water_level is None:
             return jsonify({"error": "Missing sensor_id or water_level_cm"}), 400
+        
+        # Calculate capacity percentage (47.5cm basin height per BAMBI.pdf)
+        BASIN_HEIGHT_CM = 47.5
+        capacity_pct = (water_level / BASIN_HEIGHT_CM) * 100
+        
+        # Validate alert type
+        valid_alert_types = ['normal_reading', 'blockage_detected', 'blockage_cleared']
+        if alert_type not in valid_alert_types:
+            alert_type = 'normal_reading'
 
         with psycopg2.connect(**DB_PARAMS) as conn:
             with conn.cursor() as cur:
                 if latitude and longitude:
                     cur.execute("""
                         INSERT INTO water_levels 
-                        (sensor_id, water_level_cm, latitude, longitude, location, power_consumption_watts, recorded_at, is_simulated) 
-                        VALUES (%s, %s, %s, %s, ST_SetSRID(ST_MakePoint(%s, %s), 4326), %s, %s, %s);
-                    """, (sensor_id, water_level, latitude, longitude, longitude, latitude, power_consumption, mcu_timestamp, is_simulated))
+                        (sensor_id, water_level_cm, latitude, longitude, location, power_consumption_watts, 
+                         is_simulated, alert_status, alert_type, capacity_percentage, recorded_at) 
+                        VALUES (%s, %s, %s, %s, ST_SetSRID(ST_MakePoint(%s, %s), 4326), %s, %s, %s, %s, %s, %s);
+                    """, (sensor_id, water_level, latitude, longitude, longitude, latitude, 
+                          power_consumption, is_simulated, alert_status, alert_type, capacity_pct, mcu_timestamp))
                 else:
                     cur.execute("""
-                        INSERT INTO water_levels (sensor_id, water_level_cm, power_consumption_watts, recorded_at, is_simulated) 
-                        VALUES (%s, %s, %s, %s, %s);
-                    """, (sensor_id, water_level, power_consumption, mcu_timestamp, is_simulated))
+                        INSERT INTO water_levels (sensor_id, water_level_cm, power_consumption_watts, is_simulated, alert_status, alert_type, capacity_percentage, recorded_at) 
+                        VALUES (%s, %s, %s, %s, %s, %s, %s, %s);
+                    """, (sensor_id, water_level, power_consumption, is_simulated, alert_status, alert_type, capacity_pct, mcu_timestamp))
                 conn.commit()
         
-        return jsonify({"status": "success", "message": "Data saved!"}), 201
+        if alert_status:
+            print(f"🚨 ALERT LOGGED: {sensor_id} | Type: {alert_type} | Level: {water_level}cm ({capacity_pct:.1f}%)")
+        
+        return jsonify({"status": "success", "message": "Data saved!", "capacity_percentage": capacity_pct}), 201
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
 @app.route('/api/water-level', methods=['GET'])
 def get_data():
-    """Fetch sensor readings to show on the dashboard
+    """Fetch sensor readings for dashboard with alert tracking per BAMBI.pdf spec
     
     Query parameters:
-    - limit: Number of recent readings to return (default: 100, max: 1000)
-    - source: Filter by data source - 'real' (hardware only), 'simulated' (simulator only), 'all' (default)
+    - limit: Number of recent readings (default: 100, max: 1000)
+    - source: 'real' (hardware), 'simulated' (simulator), 'all' (default)
+    - alerts_only: 'true' to show only alerting readings
     """
     try:
         limit = request.args.get('limit', default=100, type=int)
         limit = max(10, min(limit, 1000))
         source = request.args.get('source', default='all').lower()
+        alerts_only = request.args.get('alerts_only', default='false').lower() == 'true'
         
         with psycopg2.connect(**DB_PARAMS) as conn:
             with conn.cursor() as cur:
-                if source == 'real':
+                if alerts_only:
                     cur.execute("""
-                        SELECT id, sensor_id, water_level_cm, latitude, longitude, power_consumption_watts, recorded_at 
-                        FROM water_levels WHERE is_simulated = FALSE ORDER BY recorded_at DESC LIMIT %s;
+                        SELECT id, sensor_id, water_level_cm, latitude, longitude, power_consumption_watts, 
+                               alert_status, alert_type, capacity_percentage, recorded_at
+                        FROM water_levels WHERE alert_status = TRUE 
+                        ORDER BY recorded_at DESC LIMIT %s;
+                    """, (limit,))
+                elif source == 'real':
+                    cur.execute("""
+                        SELECT id, sensor_id, water_level_cm, latitude, longitude, power_consumption_watts, 
+                               alert_status, alert_type, capacity_percentage, recorded_at 
+                        FROM water_levels WHERE is_simulated = FALSE 
+                        ORDER BY recorded_at DESC LIMIT %s;
                     """, (limit,))
                 elif source == 'simulated':
                     cur.execute("""
-                        SELECT id, sensor_id, water_level_cm, latitude, longitude, power_consumption_watts, recorded_at 
-                        FROM water_levels WHERE is_simulated = TRUE ORDER BY recorded_at DESC LIMIT %s;
+                        SELECT id, sensor_id, water_level_cm, latitude, longitude, power_consumption_watts, 
+                               alert_status, alert_type, capacity_percentage, recorded_at 
+                        FROM water_levels WHERE is_simulated = TRUE 
+                        ORDER BY recorded_at DESC LIMIT %s;
                     """, (limit,))
                 else:
                     cur.execute("""
-                        SELECT id, sensor_id, water_level_cm, latitude, longitude, power_consumption_watts, recorded_at 
+                        SELECT id, sensor_id, water_level_cm, latitude, longitude, power_consumption_watts, 
+                               alert_status, alert_type, capacity_percentage, recorded_at 
                         FROM water_levels ORDER BY recorded_at DESC LIMIT %s;
                     """, (limit,))
                 rows = cur.fetchall()
@@ -181,10 +214,13 @@ def get_data():
             "latitude": float(row[3]) if row[3] else None,
             "longitude": float(row[4]) if row[4] else None,
             "power_consumption_watts": float(row[5]) if row[5] else 0.0,
-            "recorded_at": row[6].strftime("%Y-%m-%d %H:%M:%S")
+            "alert_status": row[6] if row[6] is not None else False,
+            "alert_type": row[7] if row[7] else "normal_reading",
+            "capacity_percentage": float(row[8]) if row[8] else 0.0,
+            "recorded_at": row[9].strftime("%Y-%m-%d %H:%M:%S")
         } for row in rows]
         
-        return jsonify({"status": "success", "data": results}), 200
+        return jsonify({"status": "success", "data": results, "count": len(results)}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 

@@ -1,0 +1,345 @@
+
+
+========== PAGE 26 ==========
+resilience and social connections. Public utilities experience fewer disruptions,
+maintaining continuous service and preventing outages; improved drainage can
+cut utility service interruptions by up to 20% (U.S. Department of Energy, 2021).
+This increases reliability, customer satisfaction, and resilience against severe
+weather. The system also supports better urban planning, which enhances
+infrastructure and living conditions.
+Challenges include high initial costs, ongoing maintenance, sensor
+durability, and data privacy concerns, requiring strong security measures.
+However, beyond lowering flood risks, the system offers economic and social
+benefits. It can increase property values, reduce business interruptions, and lower
+insurance costs, supporting innovation and the local economy.
+Adamson University. This study greatly benefits Adamson University by
+enhancing its research standing and demonstrating a commitment to urban
+solutions through science and technology. Integrating the real-time flood detection
+system, which uses IoT sensors and GIS mapping, encourages future research
+and provides chances for Computer Engineering, Environmental Science, and
+Engineering students to build better sensors, improve data accuracy, and design
+affordable monitoring prototypes. Significantly, it enables curriculum enhancement
+by incorporating IoT and climate resilience, with workshops and training in system
+prototyping and disaster risk reduction. Ultimately, producing a real-time flood
+forecasting prototype strengthens Adamson University's reputation, attracts
+funding, and contributes to safer, sustainable communities.
+25
+
+========== PAGE 27 ==========
+Future Researchers. This research provides significant value for future
+researchers by establishing a reproducible framework and clear performance
+metrics for IoT- and GIS-enabled flood monitoring systems. By showing real-time
+data analysis and system testing, it guides future projects to improve sensor
+technology, strengthen data transmission reliability, and explore how to integrate
+AI and climate models for smart city applications (Rajput et al., 2025). The clear
+reporting of both successes and limitations helps future research tackle existing
+gaps in the field. Additionally, this work encourages collaboration among
+engineers, computer scientists, and environmental scientists. It fosters solutions
+that enhance disaster risk reduction, especially in developing countries. Ultimately,
+this research serves as a valuable springboard for future investigations,
+contributing to academic discourse and leading to tangible, community-specific
+solutions that effectively reduce urban flooding in the Philippines.
+Definition of Terms
+Alert Response Time. Alert Response Time is the time between the notice of a
+blockage and the delivery of an alert to the user or maintenance personnel (Zhang et al.,
+2025). This measure determines the speed at which each system can alert the user once
+a blockage is detected.
+Arduino UNO R4. The Arduino UNO R4 is a 32-bit microcontroller used to process
+data from the ultrasonic sensor (Arduino Docs, n.d.). The central controller of the AHHH
+Blockage Detection System is the R4, a more powerful and better-integrated iteration of
+26
+
+========== PAGE 28 ==========
+the previous Arduino UNO versions, which manages sensor input and real-time
+coordination of the actions of GSM and GPS modules.
+Automated Hydro-Hazard Helper. The Automated Hydro-Hazard Helper is an
+IoT-and-GIS-based prototype system designed to detect storm drain blockages and
+support early warning for potential flooding. In this study, the AHHH Blockage Detection
+System served as one of the two systems evaluated.
+Blockage Detection. Blockage Detection involves detecting blockages in storm
+drains that hinder water movement using sensor data, including water level and flow rate
+measurements (Navia et al., 2024). It is the essence of both prototypes' roles: ultrasonic
+sensors monitor increases in water levels and the presence of obstacles, providing alerts
+and recording data for analysis.
+Calibration. Calibration is the process of configuring and verifying a measuring
+instrument so that its readings match a known standard, ensuring accuracy (Fluke, n.d.).
+In this study, calibration is described based on assuring the sensors and measuring tools
+of both prototypes yield precise and consistent readings prior to a performance test,
+thereby confirming the legitimacy of the experimental results.
+Data Transmission Rate. The data transmission rate between the sensor node
+and the server, typically expressed in bits per second (bps), is the metric by which the
+efficiency of each system in transmitting sensor data to the central database is compared,
+which influences real-time monitoring and alert delivery (Esposito et al., 2022).
+Early Warning System. An Early Warning System is developed to detect
+upcoming hazards, such as blockages or flooding, early and provide the opportunity to
+communicate the warning quickly and take action to reduce the risk (Esposito et al., 2022).
+27
+
+========== PAGE 29 ==========
+The AHHH Blockage Detection System is designed as an early warning system to identify
+drainage blockages and transmit real-time messages to enhance flood preparedness.
+Electrical Power Consumption. Electrical power consumption is the electrical
+energy used by devices over a given period (Repsol, 2023). This is used to determine the
+energy efficiency of the two systems in active and idle states, which influences long-term
+sustainability.
+ESP32-S3 Microcontroller. The ESP32-S3 Microcontroller is a low-cost, low-
+power microcontroller with Wi-Fi and Bluetooth support, used for sensor data collection
+and information transmission in Internet of Things (IoT) applications (Espressif Systems,
+2023). It will be employed in the SHBS prototype to interpret ultrasonic sensor data and
+relay messages via GSM, which serves as the standard of reference.
+Geographic Information System. A Geographic Information System (GIS) is a
+computer-based application used to capture, store, analyze, and display geographically
+referenced data about locations on the Earth's surface (USGS, n.d.). The A.H.H. system
+uses GIS to visualize blockage locations and water levels on the map, enhancing spatial
+awareness and decision-making.
+Global Positioning System. The Global Positioning System is a satellite-based
+navigation system that provides precise location and time data, enabling more accurate
+pinpointing of storm drain blockages (Manning, 2023). The A.H.H. system relies on GPS
+to tag the locations of blockages to be mapped using GIS and to enhance the accuracy of
+spatial data.
+Global System of Mobile Communication. Global System for Mobile
+Communication (GSM) is a mobile network communication standard that supports the
+28
+
+========== PAGE 30 ==========
+transmission of sensor and location data of remote Internet of Things (IoT) nodes to
+centralized systems (Awati et al., 2025). In both prototypes, GSM modules are utilized to
+transmit blockage notification and sensor information to the central database or
+dashboard.
+Graphical User Interface. The Graphical User Interface (UI) is a visual part of
+software that allows users to interact with the system through graphical objects (buttons,
+icons, dashboards, and so on) rather than a text interface (Paganelli et al., 2022). The
+AHHH Blockage Detection System uses a web dashboard to monitor real-time sensor data
+and alert the user, including a GUI.
+Internet of Things. The Internet of Things, or IoT, is a network of connected
+devices that use sensors, software, and other technologies to collect and share data to
+enable automation and informed decision-making (Paganelli et al., 2022). Both systems
+rely on IoT, which enables them to detect, transmit, and generate real-time alerts for
+drainage monitoring.
+Precision. Precision is a performance metric that measures the proportion of
+correctly identified positive results (true positives) among all positive results generated by
+a system, indicating its ability to avoid false detections (Ultralytics, n.d.). In this study,
+precision is used to assess the accuracy of the system in correctly identifying actual
+blockages relative to all detected cases, ensuring minimal false detections and consistent
+performance.
+Real-Time Alert. A Real-Time Alert is an automatic message emitted as soon as
+the system detects abnormal water levels or blockages, enabling quick action (Zhang et
+29
+
+========== PAGE 31 ==========
+al., 2025). Notifications are sent to users and LGUs about the identified blockage, so they
+can respond promptly to prevent flooding.
+Real-Time Monitoring. Real-Time Monitoring is the process of continuously
+gathering and analyzing data to identify deviations quickly and respond appropriately
+(Esposito et al., 2022). The AHHH Blockage Detection System continuously monitors
+water level and blockage conditions, which are reflected on the GIS dashboard.
+Recall Score. Recall score is a performance metric that measures the percentage
+of actual blockages the detection system successfully detects (Ultralytics, n.d.). This
+metric is applied to determine the degree of each system in identifying the actual
+blockages in test experiments.
+Short Message Service (SMS). Short Message Service (SMS) is a text
+messaging service component of most telephone, internet, and mobile device systems,
+using standardized communication protocols to allow mobile devices to exchange short
+text messages (Awati et al., 2025). In the SHBS prototype, SMS is used to deliver alert
+notifications to users when a blockage is detected.
+Simulation Environment. A simulation environment is a virtual or real-world
+environment created to model real-life conditions for training, testing, or research
+(FinchTrade, n.d.). The prototypes are tested in a controlled laboratory environment that
+simulates catch basins to allow reliable, safe testing of system performance.
+Standardized Hardware Benchmark System. A Standardized Hardware
+Benchmark System (SHBS) is a reference model designed using predefined hardware to
+serve as a benchmark against which new designs can be assessed (TechTarget, 2022).
+30
+
+========== PAGE 32 ==========
+The control system is the SHBS, which is used to compare the performance of the AHHH
+Blockage Detection System.
+Ultrasonic Sensor. An Ultrasonic Sensor is a device that uses ultrasonic sound
+waves to estimate the distance or the rise of water in storm drains, which can indicate the
+presence of obstructions (The IoT Academy, 2025). The two systems use these sensors
+to monitor water-level changes that indicate the presence of blockages.
+Web Dashboard. Web Dashboard is an online platform that consolidates data
+visualization, real-time monitoring, and alert management, enabling users to remotely
+oversee the performance of the storm drain system (Paganelli et al., 2022). The AHHH
+Blockage Detection System uses a web dashboard to display sensor data and GIS maps,
+replacing SMS alerts for better user interaction.
+31
+
+========== PAGE 33 ==========
+CHAPTER 2
+PROJECT DETAILS
+This chapter details the methodology employed in developing the project. It
+outlines the design concept that guided the work, followed by a description of the
+overall method and procedures used. The chapter then lists the specific materials,
+equipment, and technology used in the project's development. Subsequently, the
+project construction phase is detailed, leading into a structured approach for
+assessment and testing. Finally, the chapter includes relevant data in tables and
+concludes with necessary statements on ethics and AI-use disclosure for complete
+transparency.
+Design Concept
+Building on Rajput et al.'s (2025) Standardized Hardware Benchmark
+System (SHBS), the AHHH Blockage Detection System represents a significant
+advancement in real-time drainage monitoring, leveraging both IoT and GIS
+technologies for early flood warnings. The prototype is an Arduino Uno R4 that
+processes data from the A02YYUW ultrasonic sensor. This sensor precisely
+measures water levels within drainage basins to identify potential obstructions. The
+SIM7600 module, equipped with GPS and GSM antennas, facilitates seamless
+wireless data transmission to a centralized database.
+The blockage detection system is designed around a threshold-based
+monitoring approach using an ultrasonic sensor integrated with an Arduino UNO
+32
+
+========== PAGE 34 ==========
+R4 microcontroller. Studies recommend multi-level classification instead of a single
+alert point to allow stepwise escalation of mitigation measures depending on
+severity (Choosumrong et al., 2025). Using percentage-based thresholds (25%,
+50%, and 75%) provides a simple, scalable, and easily interpretable way to classify
+rising water levels. This approach is commonly used in real-time flood-warning and
+IoT alert systems, allowing clear and immediate risk communication without
+requiring complex calculations from users (Jadhav et al., 2025). Therefore,
+adopting percentage-based thresholds for triggering alerts and classifying risk
+levels provides a practical, evidence-based method to represent rising water
+conditions in catch basins.
+The system continuously reads water levels in the storm drain and
+compares each reading against a pre-defined threshold of 4.7 inches or 25% of
+the catch basin’s height. Readings below this threshold indicate normal conditions,
+prompting the system to continue monitoring, while readings equal to or above 4.7
+inches trigger the preparation of an alert message, signaling a potential blockage.
+To stabilize the detection behavior, the system also applies a hysteresis margin,
+wherein a “clear” condition is recognized only when water level falls to 4.2 inches
+or lower. This prevents rapid switching between alert and normal states when
+water levels fluctuate near the threshold.
+The programmed logic was designed to directly support the system’s
+operational flow. The microcontroller retrieves continuous distance readings from
+the A02YYUW ultrasonic sensor and converts them into corresponding water
+33
+
+========== PAGE 35 ==========
+levels. Each reading is evaluated against the 4.7-inch detection threshold. Once
+the threshold is met, the system constructs a formatted alert message containing
+water-level data and status updates. The alert and subsequent updates are sent
+through GSM connectivity to the central server or designated recipients. The
+collected data undergoes processing and storage, culminating in a user-friendly,
+web-based graphical user interface (GUI) that integrates PostgreSQL and QGIS.
+The live readings and alert status are then reflected on the dashboard for real-time
+monitoring by users. After transmission, the system returns to continuous
+monitoring, ensuring uninterrupted, real-time detection. This interface offers real-
+time mapping of water levels and drainage conditions, enabling the identification
+of potential problem areas.
+Functioning as an early warning system, the platform triggers alerts when it
+detects abnormal readings or blockages, facilitating rapid intervention. Unlike the
+SHBS, which primarily relies on IoT-based detection and SMS alerts, the AHHH
+Blockage Detection System adopts a more proactive monitoring strategy by
+merging IoT sensing with GIS-driven visualization and web-based alerts.
+By embedding a clear decision point within the Arduino logic, the system
+maintains coherence from initial sensor measurement up to final data visualization
+and user notification. The threshold logic is embedded exclusively in the AHHH
+Blockage prototype (experimental group), which integrates IoT, GSM, and GIS
+components. In contrast, Rajput’s Prototype (control group) performs blockage
+detection without GIS connectivity.
+34
+
+========== PAGE 36 ==========
+Figure 2
+System Block of AHHH Blockage Detection System
+Figure 3
+AHHH Blockage Detection System and SHBS Data Handling Difference
+35
+
+========== PAGE 37 ==========
+Methods
+This study will employ a systematic methodology encompassing system
+design, hardware and software development, integration, testing, data analysis,
+and documentation. The research will begin with a comprehensive review of
+related literature to inform the design and development of the AHHH Blockage
+Detection System prototype. This review focused on key technologies, including
+IoT, GPS, GIS, GSM communication, and web-based graphical interfaces.
+Existing blockage detection frameworks were analyzed to identify limitations
+in detection efficacy, operational efficiency, and responsiveness. Rajput et al.'s
+(2025) prototype, serving as the Standardized Hardware Benchmark System
+(SHBS), was carefully examined to identify specific areas for improvement.
+Through this analysis, the researchers identified key gaps such as limited sensing
+reliability during varying water conditions, slower communication performance due
+to older GSM technology, and the absence of GIS-based visualization for decision
+support.
+Based on the literature review and the analysis of the SHBS, specific system
+requirements were defined to enhance key performance metrics: recall score,
+precision, electrical power consumption, data rate, and alert response time. These
+requirements guided the design and fabrication of the AHHH Blockage Detection
+System. This involved selecting appropriate hardware components and designing
+the model for improved component integration. The assembly of the hardware
+36
+
+========== PAGE 38 ==========
+included connecting the ultrasonic sensor and the communication module to the
+microcontroller using jumper wires and a breadboard.
+The Trigger and Echo pins of the ultrasonic sensor were connected to the
+corresponding digital pins on the microcontroller, while the communication module
+was linked through its TX and RX pins to enable serial data transmission. A single
+battery served as the primary power source, supplying the microcontroller and
+allowing the attached modules to operate through its regulated output. All
+components were arranged on a breadboard to ensure stable and reliable
+connections during testing.
+Both the SHBS and the improved AHHH Blockage Detection System were
+programmed in the Arduino IDE using C++, ensuring compatibility and facilitating
+comparative analysis. This involved configuring the Arduino IDE and implementing
+C++ code for sensor data processing, communication protocols, and alert-
+response algorithms for both systems. Specific configurations were established in
+the Arduino IDE to activate and manage the connected components.
+Key functions such as pinMode() were used to declare sensor and
+communication pins as input or output, while digitalWrite() generated the HIGH
+pulse needed to trigger the ultrasonic sensor. The pulseIn() function measured the
+echo return time, which was converted into water-level distance. Serial
+communication was initialized using Serial.begin(), with Serial.print() and
+Serial.println() used to transmit AT commands and output real-time sensor
+readings. The millis() function supported non-blocking timing for measurement
+37
+
+========== PAGE 39 ==========
+intervals, SMS cooldowns, and event tracking. Conditional if statements were
+employed to compare computed distances with predefined blockage thresholds,
+enabling the system to determine normal and critical water-level conditions.
+These Arduino functions collectively allowed the system to generate sensor
+signals, retrieve measurements, interpret them, and communicate the results.
+Through this coordinated workflow, the device successfully detected abnormal
+rises in water level, enabling timely blockage detection as intended.
+The thresholds of 25%, 50%, and 75% of the catch basin height are selected
+to represent progressive levels of hydraulic risk within the drainage system. These
+values allow the prototype to detect and classify rising water levels before they
+reach critical capacity. Once the water level reaches any of the defined thresholds,
+the prototype sends automated alerts every five minutes as long as the condition
+persists.
+This periodic notification ensures that emerging hazards remain visible to
+users without overwhelming them with continuous messages. When the water
+level returns to normal (below the lowest threshold), the system sends a final
+“regularization” alert to confirm that the obstruction has been relieved and drainage
+has stabilized. After this reset notification, the alert cycle stops until a new
+threshold is crossed.
+System integration and calibration tests will ensure accurate sensor
+readings and stable communication by integrating the power supply, calibrating
+sensors, configuring the GSM module for communication, and developing a web-
+38
+
+========== PAGE 40 ==========
+based interface for real-time data visualization and alert monitoring. To evaluate
+the effectiveness of the improved design, experimental validation will be conducted
+in a controlled laboratory setup simulating realistic drainage blockage scenarios.
+Materials, Equipment, and Technology Used
+This study utilized a range of materials, equipment, and technologies to
+develop and test two drainage blockage detection prototypes: the Standardized
+Hardware Benchmark System (SHBS), based on Rajput et al. (2025), and the
+improved AHHH Blockage Detection System.
+Featuring an ESP32-S3 microcontroller, the SHBS integrated a SIM900
+GSM module, an HC-SR04 ultrasonic sensor, and a lithium-ion battery.
+Programming and sensor calibration were carried out in the Arduino IDE using
+C++, chosen for its flexibility and extensive community support. The AHHH
+Blockage Detection System was developed as an enhancement of the SHBS. It
+utilized an Arduino UNO R4 microcontroller, a SIM7600 GSM module equipped
+with both GSM and GPS antennas for improved communication and location
+tracking, and an A02YYUW waterproof ultrasonic sensor for more reliable
+water‑level sensing.
+The researchers opted for the Arduino Uno R4 over its R3 predecessor to
+harness its advanced 32-bit architecture and greater processing capabilities. This
+decision was driven by the need to efficiently manage the complex data streams
+required for GIS integration, with the expectation of significantly reducing Alert
+39

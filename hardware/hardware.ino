@@ -20,17 +20,31 @@ const uint8_t INA219_ADDR = 0x40;
 const uint8_t RTC_ADDR = 0x68;
 
 // Thresholds (inches) & Hysteresis
+// SPEC: 4.7" = 25% of 18.7" basin = blockage threshold
+// SPEC: 4.2" = 22.5% = hysteresis clear threshold  
 const float FLOOD_THRESHOLD = 4.7;    
 const float NORMAL_THRESHOLD = 4.2;
 const float INCH_TO_CM = 2.54;
 
+// Alert levels per BAMBI.pdf spec: 25%, 50%, 75% escalation
+// But hardware uses simple binary: normal or flooded
+// 25% = 4.7", 50% = 9.35", 75% = 14.025"
+const float ALERT_LEVEL_2 = 9.35;   // 50% threshold
+const float ALERT_LEVEL_3 = 14.025; // 75% threshold
+
 // State Management
-enum WaterState { NORMAL, FLOODED };
+enum WaterState { NORMAL, FLOODED, ESCALATED };
 WaterState currentState = NORMAL;
 const unsigned long MEASUREMENT_INTERVAL = 10000;    
-const unsigned long ALERT_REPEAT_INTERVAL = 300000;
+const unsigned long ALERT_REPEAT_INTERVAL = 300000;  // 5 minutes per spec
 unsigned long lastMeasurementTime = 0;
 unsigned long lastAlertTime = 0;
+unsigned long lastAlertRepeatTime = 0;
+
+// Performance tracking for metrics
+unsigned long dataPacketsSent = 0;
+unsigned long totalDataBytes = 0;
+unsigned long systemStartTime = 0;
 
 // Server & Location
 const char* serverUrl = "http://192.168.x.x:5000/api/water-level";
@@ -125,7 +139,7 @@ bool gsmSerialReadResponse() {
     return false;
 }
 
-bool sendDataViaSIM7600(float waterLevel) {
+bool sendDataViaSIM7600(float waterLevel, bool isAlert = false, bool isCleared = false) {
     float waterLevelCm = waterLevel * INCH_TO_CM;
     float powerWatts = readPowerConsumption();
     String timestamp = getRTCTimestamp();
@@ -137,9 +151,27 @@ bool sendDataViaSIM7600(float waterLevel) {
     doc["longitude"] = longitude;
     doc["power_consumption_watts"] = powerWatts;
     doc["mcu_timestamp"] = timestamp;
+    doc["is_simulated"] = false;  // Real hardware
+    
+    // Per BAMBI.pdf: Add alert status and type
+    if (isAlert) {
+        doc["alert_status"] = true;
+        doc["alert_type"] = "blockage_detected";
+        Serial.println("🚨 BLOCKAGE ALERT SENT via HTTP");
+    } else if (isCleared) {
+        doc["alert_status"] = false;
+        doc["alert_type"] = "blockage_cleared";
+        doc["message"] = "Regularization: blockage has been relieved";
+        Serial.println("✅ REGULARIZATION ALERT SENT via HTTP");
+    } else {
+        doc["alert_status"] = false;
+        doc["alert_type"] = "normal_reading";
+    }
     
     String payload;
     serializeJson(doc, payload);
+    totalDataBytes += payload.length();
+    dataPacketsSent++;
     
     String urlCmd = "AT+HTTPPARA=\"URL\",\"" + String(serverUrl) + "\"";
     if (!sendATCommand(urlCmd.c_str(), 2000)) return false;
@@ -187,10 +219,14 @@ void setup() {
     gsmSerial.begin(115200);
     
     pinMode(LED_PIN, OUTPUT);
+    systemStartTime = millis();
     
     Serial.println("\n===== A.H.H.H. SYSTEM - ARDUINO UNO R4 =====");
-    Serial.println("Blockage Detection with Power Monitoring");
-    Serial.println("Flood Threshold: 4.7 inches | Normal: 4.2 inches");
+    Serial.println("IoT+GIS Blockage Detection per BAMBI.pdf Spec");
+    Serial.println("Flood Threshold: 4.7 inches (25% capacity)");
+    Serial.println("Multi-level alerts: 25%, 50%, 75% escalation");
+    Serial.println("Alert repeat: Every 5 minutes while condition persists");
+    Serial.println("Clear condition: 4.2 inches with hysteresis");
     
     initI2C();
     initGSM();
@@ -207,31 +243,48 @@ void loop() {
         
         float levelCm = levelInches * INCH_TO_CM;
         float powerW = readPowerConsumption();
+        float capacityPct = (levelCm / 47.5) * 100;  // Basin height: 47.5cm
         
-        // Fixed: Removed printf
+        // Display current status
         Serial.print("📊 Water: ");
         Serial.print(levelCm, 2);
-        Serial.print(" cm | Power: ");
+        Serial.print(" cm (");
+        Serial.print(capacityPct, 1);
+        Serial.print("%) | Power: ");
         Serial.print(powerW, 2);
         Serial.println(" W");
 
+        // STATE MACHINE per BAMBI.pdf spec
+        // NORMAL state → FLOODED (on threshold breach)
         if (currentState == NORMAL && levelInches >= FLOOD_THRESHOLD) {
             currentState = FLOODED;
             lastAlertTime = millis();
-            Serial.println("🚨 BLOCKAGE DETECTED!");
-            sendDataViaSIM7600(levelInches);
+            lastAlertRepeatTime = millis();
+            Serial.println("🚨 BLOCKAGE DETECTED! [25% capacity reached]");
+            sendDataViaSIM7600(levelInches, true, false);  // Send alert
             
-        } else if (currentState == FLOODED) {
-            if (millis() - lastAlertTime >= ALERT_REPEAT_INTERVAL) {
-                lastAlertTime = millis();
-                Serial.println("🔔 Repeat alert...");
-                sendDataViaSIM7600(levelInches);
+        } 
+        // FLOODED state → handle repeating alerts every 5 minutes
+        else if (currentState == FLOODED) {
+            // Check if 5 min repeat interval elapsed
+            if (millis() - lastAlertRepeatTime >= ALERT_REPEAT_INTERVAL) {
+                lastAlertRepeatTime = millis();
+                Serial.println("🔔 Repeat blockage alert (5 min cycle)...");
+                sendDataViaSIM7600(levelInches, true, false);
             }
             
+            // Check for escalation to next level (50%)
+            else if (levelInches >= ALERT_LEVEL_2 && currentState != ESCALATED) {
+                currentState = ESCALATED;
+                Serial.println("⚠️ ESCALATED: 50% capacity reached!");
+                sendDataViaSIM7600(levelInches, true, false);
+            }
+            
+            // Check for recovery: hysteresis clears condition
             if (levelInches <= NORMAL_THRESHOLD) {
                 currentState = NORMAL;
-                Serial.println("✅ Blockage cleared");
-                sendDataViaSIM7600(levelInches);
+                Serial.println("✅ BLOCKAGE CLEARED [Regularization Alert]");
+                sendDataViaSIM7600(levelInches, false, true);  // Send regularization alert
             }
         }
     }

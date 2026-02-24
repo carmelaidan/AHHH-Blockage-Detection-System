@@ -1,0 +1,434 @@
+
+
+========== PAGE 1 ==========
+Comparative Performance Evaluation of the IoT- and GIS-based Automated
+Hydro-Hazard Helper and a Benchmark Storm Drain Blockage Detection
+System
+A RESEARCH PROPOSAL
+Presented to the Research Area
+Adamson University – Senior High School
+Manila
+In Partial Fulfillment
+of the Final Term Requirements for Practical Research 2
+12 SENG 3 COHORT 1
+November 2025
+
+========== PAGE 2 ==========
+TABLE OF CONTENTS
+Table of Contents 1
+List of Tables 2
+List of Figures 3
+Chapter 1 The Problem and Literature Review 4
+Background of the Study 4
+Literature Review 6
+Theoretical Framework 12
+Conceptual Framework 14
+Research Problems and Hypotheses 15
+Scope, Delimitations, and Limitations 18
+Significance of the Study 21
+Definition of Terms 26
+Chapter 2 Project Details 32
+Design Concept 32
+Methods 36
+Materials, Equipment, and Technology Used 39
+Project Construction 42
+Assessment and Testing 44
+Ethics Statement 47
+AI-Use Disclosure Statement 48
+References 49
+1
+
+========== PAGE 3 ==========
+LIST OF TABLES
+Table Page
+1 Performance Interpretation Matrix for the AHHH Blockage 47
+Detection System and SHBS System.
+2
+
+========== PAGE 4 ==========
+LIST OF FIGURES
+Figure Page
+1 Conceptual Framework 15
+2 System Block of AHHH Blockage Detection System 35
+3 AHHH Blockage Detection System and SHBS Data Handling 35
+Difference
+3
+
+========== PAGE 5 ==========
+CHAPTER 1
+THE PROBLEM AND LITERATURE REVIEW
+This chapter establishes the foundation for this study. It begins with an
+introduction that provides background information and context, followed by the
+theoretical and conceptual frameworks guiding the research. The chapter then
+presents the statement of the problem, outlining the specific research questions
+and hypotheses. The scope and delimitations clearly define the study's
+boundaries, while the limitations address potential constraints. Finally, the
+significance of the study emphasizes its contributions to the field, and a
+comprehensive definition of terms ensures clarity and consistency throughout the
+research.
+Background of the Study
+Urban flooding is a growing global crisis. It results from rapid urbanization
+and climate change, threatening infrastructure and public safety (Rentschler et al.,
+2022; Cariaso, 2025). Cities like Jakarta and Mumbai suffer major economic losses
+due to poor drainage systems (Asdak et al., 2018; New Media, 2024). In 2023,
+floods affected over 50 million people, leading to contaminated water, sanitation
+disruptions, and a 20% increase in diarrheal disease cases (Acosta-España et al.,
+2024). With an average of 19 to 20 typhoons each year (Espiritu, 2024), the
+Philippines faces challenges from clogged drains and slow inspections (Ombay &
+Locus, 2024). The severe effects of these conditions were evident during Typhoon
+4
+
+========== PAGE 6 ==========
+Ondoy, which cost the government around $4.42 billion (GFDRR, 2022).
+Moreover, Metro Manila's aging and silted drainage system (Punzalan & Dizon,
+2025) is insufficient, according to DPWH Secretary Manuel Bonoan, and suffers
+from substandard or nonexistent flood control projects (Sadongdong, 2025;
+Superable, 2025). This situation shows a pressing need for community-level early
+warning systems and real-time monitoring for drainage management.
+The Internet of Things (IoT) has great potential to improve flood and
+drainage management. It includes pollution monitoring (Zulkifli et al., 2022) and
+open GIS data for urban drainage planning (See et al., 2020). Abedin and Stephen
+(2019) developed a GIS-based model that produced flood-extent maps showing
+possible locations and severity. Acoustic reflectometry achieved 95% accuracy in
+blockage detection (Kelly et al., 2024). Te et al. (2024) used pressure sensors,
+LoRaWAN, and solar power, while Rajput et al. (2025) used ultrasonic sensors
+and GSM modules. While these studies propose detection methodologies, there is
+a distinct lack of published research providing a rigorous, quantitative performance
+comparison of such novel detection systems against established benchmarks or
+prior art. Therefore, this study will aim to address this critical gap by conducting a
+comparative performance evaluation of the proposed Automated Hydro-Hazard
+Helper (AHHH) Blockage Detection System against the standardized Rajput et al.
+(2025) logic, specifically assessing its practicality, durability, and effectiveness
+using verified quantitative metrics.
+5
+
+========== PAGE 7 ==========
+To address the shortcomings of current methods and the need for effective
+solutions, this study focuses on creating a technology-driven monitoring system for
+real-time alerts. The system aims to improve stormwater drainage management,
+which is crucial for reducing the economic, environmental, and public health
+impacts of flooding, aligning with SDG 13 (Climate Action). This approach also
+directly supports the Harmonized National Research and Development Agenda’s
+(HNRDA) focus on Disaster Risk Reduction and Climate Change Adaptation
+(DRR-CCA) by improving monitoring and information sharing (DOST-PCHRD,
+2024). It also helps the national goal of protecting infrastructure and building
+community resilience (Department of Science and Technology, 2022). By
+innovating localized monitoring technologies, the project supports Adamson
+University Senior High School's Research Agenda (RA 8) on Multi-Hazard
+Assessment Tools and Systems. Additionally, it aligns with the Philippine Disaster
+Risk Reduction and Management Act of 2010 (RA 10121) and the UN's "Early
+Warnings for All" initiative (UNFCCC, 2022), both of which highlight the importance
+of early warning systems in reducing vulnerability.
+Literature Review
+Urban Drainage Early Warning System
+The development and implementation of effective early warning systems for
+urban flooding and drainage management are increasingly recognized as critical
+priorities. Recent studies highlight innovative approaches for real-time
+6
+
+========== PAGE 8 ==========
+environmental monitoring of water infrastructure, which form the foundation of such
+systems. For example, Tatiparthi et al. (2025) demonstrated the effectiveness of
+UHF-RFID sensors for sewer monitoring, providing a means for early detection of
+potential blockages. Complementing this, Pahuriray and Cerna (2025) identified
+ultrasonic sensors, rain gauges, and machine learning algorithms as reliable
+components for real-time flood detection and prediction, enabling timely warnings
+to be issued.
+The intensifying societal impacts of urban flooding and rainage blockages
+underscore the urgency of advancing early warning systems. These issues pose
+risks to public safety and weaken community preparedness. They also bring health
+concerns, such as leptospirosis (CDC, 2025; Acosta-España et al., 2024). Cases
+from the Philippines reveal the severe destruction caused by typhoon flooding
+(GFDRR, 2022; Palawan News, 2023) and the significant economic impact of
+unpreparedness (Mag-aso, 2018). The UNEP (2025) stresses the importance of
+implementing early warning systems by 2027 to save lives and reduce damage.
+Integration of IoT and GIS Spatial Mapping
+Recent developments in smart drainage and flood monitoring systems
+integrate IoT and GIS to enhance real-time monitoring and response capabilities.
+Navia et al. (2024) demonstrated how IoT-enabled sensors can identify storm drain
+blockages by continuously measuring water levels and detecting abnormal
+patterns. Paudel and Neupane (2021) further explained that IoT architectures with
+7
+
+========== PAGE 9 ==========
+perception, gateway, cloud, and application layers enable scalable data
+transmission and automated alerting.
+Other researchers, such as Zulkifli et al. (2022) and Te et al. (2024),
+improved the accuracy and reliability of IoT systems by incorporating energy-
+efficient sensors, AI-based analysis, and long-range communication protocols like
+LoRaWAN. Complementing these efforts, Kashid et al. (2025) utilized ultrasonic
+and vibration sensors with cloud-based machine learning to detect blocked
+drainage pipes, and Tolentino et al. (2023) developed a community-based flood
+tracker capable of sending sensor data for local alerts and notifications. Across
+these studies, IoT consistently proves its value in providing real-time monitoring,
+fast alerting, and automation, making it a foundational technology for modern flood-
+warning systems.
+More recent studies emphasize real-time environmental monitoring in
+drainage and flood control, often leveraging the combined power of IoT and GIS.
+GIS plays a critical role in converting IoT sensor readings into spatially meaningful
+information that helps stakeholders understand where flooding or blockages occur.
+Abedin and Stephen (2019) used GIS to investigate flood patterns, while See et
+al. (2020) advocated participatory mapping. Although these are different, they
+exemplify how the incorporation of proper GIS modeling and engagement of
+communities could support more flexible and sustainable flood management
+preferences. Rajput et al. (2025) developed a simulation-based IoT system to
+detect drainage blockages, utilizing the ESP32 microcontroller, HC-SR04
+8
+
+========== PAGE 10 ==========
+ultrasonic sensor, and SIM900 GSM module to simulate drainage movement. The
+model's performance was assessed based on Recall, Precision, Data Rate,
+Response Time, and Power Consumption, demonstrating the feasibility of IoT-
+based flood detection.
+Recall and Precision
+In Bramer, Giustini, and Kramer’s (2016) study, they evaluated the recall
+and precision of the three leading databases: Embase, MEDLINE, and Google
+Scholar, by comparing the databases with respect to their effectiveness for
+systematic reviews. The combination of Embase and MEDLINE was found to
+achieve the highest recall (81.6%), while still maintaining low precision (≈2%).
+Broad searches were thus demonstrated to result in high completeness, but at the
+same time, to entail a larger number of irrelevancies.
+On the other hand, Sadeli and Lawanda (2023) focused on recall, precision,
+and F-measure in an Electronic Document Management System (EDMS) and
+found almost perfect recall (1.00) and high precision (0.9713) when the search
+syntax was optimized, for example, with the use of quotation marks. Integrating
+both studies, recall guarantees that full retrieval and precision give better
+relevance; thus, the trade-off between them depends on the system’s objective,
+either for thorough academic searches or quick document management. For the
+AHHH Blockage Detection System, high recall ensures that all actual blockages
+are detected (minimizing false negatives), while high precision ensures that alerts
+9
+
+========== PAGE 11 ==========
+are only triggered when a blockage is truly present (minimizing false positives),
+which is critical for resource-efficient flood response.
+Alert Response Time and Data Rate
+Alert response time and data rate have been particularly highlighted in the
+context of the integration of IoT for early warning and public safety systems. A case
+in point is the systematic review of IoT-based early warning systems for floods,
+earthquakes, tsunamis, and landslides by Esposito et al. (2022).
+Recent studies have taken the latency issue of time-critical IoT systems
+even further. According to Leclerc et al. (2025), achieving a high service level
+requires minimizing both transmission delays and processing times. At the same
+time, Zhang, Zhang, and Sun (2025) worked on a prototype IoT-based public
+safety alert system that can deliver alerts in less than 450 milliseconds. Their
+findings underscore the fact that the design decisions made regarding protocol,
+network type, and edge processing can significantly impact the latency
+experienced in realistic emergencies.
+Complementing these latency-focused studies, recent work has also
+emphasized the importance of data rate in ensuring reliable sensor communication
+in environmental monitoring systems. Rahman et al. (2022) evaluated how packet
+size, channel-listening intervals, and network setup affect transmission
+performance. At the same time, Figueiredo et al. (2019) introduced RiverCore, a
+cellular-based IoT device for water-level monitoring.
+10
+
+========== PAGE 12 ==========
+Their findings revealed that cellular systems enable more frequent and
+reliable sensor transmissions. Together, these studies show that data rates are a
+key factor in overall system performance. They highlight the need to choose
+communication technologies that balance power consumption, coverage, and
+reliability, particularly for real-time IoT applications such as detecting drainage
+blockages and monitoring floods.
+Power Consumption
+Energy consumption is an important consideration in Internet of Things (IoT)
+applications, especially those that rely on Low-Power Wide Area Networks
+(LPWANs). Singh et al.'s (2020) study emphasizes the importance of
+understanding energy usage in wireless communication, particularly for battery-
+powered end devices such as sensors and actuators. Their empirical analysis of
+technologies such as LoRaWAN, DASH7, Sigfox, and NB-IoT indicates that
+LoRaWAN and DASH7 are more energy-efficient compared to Sigfox and NB-IoT.
+Similarly, García-Martín & Torralba (2023) focus on NB-IoT, presenting an
+analytical model for energy consumption in diverse IoT applications. These studies
+highlight the importance of selecting the right technology and battery capacity to
+optimize the effectiveness and longevity of IoT deployments, while also
+acknowledging that real-world applications often experience significant deviations
+from ideal-case battery lifetimes. In the AHHH Blockage Detection System,
+electrical power consumption must be low to guarantee long-term sustainability
+11
+
+========== PAGE 13 ==========
+and reduce the frequency of maintenance, particularly in hard-to-access drainage
+areas.
+Theoretical Framework
+The foundation of this study is based on two theories, Modified Manning’s
+Equation and Systems Theory. Together, these theories form the hydraulic and
+structural foundation for the IoT- and GIS-based AHHH Blockage Detection
+System for storm drains.
+The Modified Manning's Equation, first proposed by Robert Manning in 1891
+and later extended by studies like Wang et al. 2024, is the basis for understanding
+flow behavior in open-channel systems, including storm drains. This research will
+measure the effects of obstructions on flow movement, hydraulic radius, and water
+level, key indicators of blockages.
+1 2 1
+𝑄 = 𝐴𝑅3𝑆2
+𝑛
+The hydraulic radius, 'R,' is the cross-sectional area divided by the wetted
+perimeter, indicating how efficiently a channel carries water. 'S,' the slope of the
+hydraulic grade line, shows the flow's energy gradient, with steeper slopes
+meaning higher velocities.
+Relationships among discharge (Q), cross-sectional area (A), roughness
+coefficient (n), hydraulic radius (R), and slope (S) help determine how changes in
+channel traits affect water velocity and height. The AHHH Blockage Detection
+12
+
+========== PAGE 14 ==========
+System and controlled laboratory simulation are based on this scientific foundation
+and utilize ultrasonic sensors to measure and quantify changes in water level that
+will operate as a common physical measure of partial or complete blockage in
+storm drain systems.
+The study is then anchored in the Systems Theory (Ludwig von Bertalanffy,
+1968), which establishes the structure and functionality of the proposed system.
+Systems Theory has been used in various engineering studies to establish the
+design of automated systems that are interconnected and dynamic with self-
+regulating capabilities and feedback mechanisms, including autonomous control
+systems, smart monitoring technology, and process automation (Fortuna &
+Buscarino, 2024). Likewise, the study leverages Systems Theory as it relates to
+the interconnectivity and coordination among the sensing, processing, and
+communication components of the AHHH Blockage Detection System.
+Systems Theory provides a direct line of connection to the dependent
+variables or performance metrics by facilitating the effective exchange of data and
+information, thereby allowing for the quickest response time built into the system.
+In conclusion, Systems Theory supports the engineering basis for the study by
+allowing each system subsystem to work in harmony to establish sustainable
+operational efficiency and reliability.
+13
+
+========== PAGE 15 ==========
+Conceptual Framework
+The research is built upon a conceptual framework primarily rooted in the
+Modified Manning’s Equation. The equation serves as the fundamental basis for
+understanding hydraulic principles and informing system design. This equation
+guides the selection of sensors, hardware configuration, data requirements, and
+testing procedures. Systems Theory provides a strong foundation for organizing
+and integrating the various subsystems involved in blockage detection. This theory
+facilitates the design and assessment of two key prototype systems: the
+experimental AHHH Blockage Detection System and the Standardized Hardware
+Benchmark System (SHBS), adapted from Rajput et al. (2025), which serves as a
+comparative benchmark.
+To enhance system capabilities, the framework integrates Internet of Things
+(IoT) and Geographic Information Systems (GIS) technologies. IoT enables
+continuous, remote monitoring and data collection, while GIS provides spatial
+visualization and mapping of blockage occurrences. The AHHH system leverages
+both IoT and GIS, while the SHBS primarily relies on IoT with SMS alerts. The
+performance of both systems is rigorously evaluated under controlled laboratory
+conditions, simulating real-world scenarios. Key performance metrics include recall
+score, precision, data rate, electrical power consumption, and alert response time.
+Statistical analysis, using descriptive statistics and paired t-tests, will be employed
+to determine significant performance differences between the systems.
+14
+
+========== PAGE 16 ==========
+By anchoring the system design in the well-established Modified Manning's
+Equation, the researchers ensure a sound understanding of drainage flow
+dynamics. The application of Systems Theory enables a holistic approach to
+integrating and optimizing the various components of the blockage detection
+system. Furthermore, the incorporation of IoT and GIS technologies provides real-
+time monitoring, spatial visualization, and enhanced decision-making capabilities.
+Figure 1
+Conceptual Framework of the Study
+Research Problem
+This study evaluates the performance efficacy and efficiency of the novel
+IoT- and GIS-based AHHH Blockage Detection System against a Standardized
+15
+
+========== PAGE 17 ==========
+Hardware Benchmark System (SHBS) to quantify their differences in detection
+accuracy, operational efficiency, and alert responsiveness for strengthening urban
+resilience and reducing flood risks.
+1. What is the mean performance of the SHBS, implementing the logic of
+Rajput et al. (2025), in detecting potential drainage blockages based on
+water level measurements and obstruction presence, in terms of:
+1.1. recall score (x̄ %);
+1.2. precision (x̄%);
+1.3. data rate (x̄ bits/s);
+1.4. electrical power consumption (x̄ Watts); and
+1.5. alert response time (x̄ seconds)?
+2. What is the mean performance of the AHHH Blockage Detection
+(Automated Hydro Hazard Helper in Blockage Detection) System, in
+detecting potential blockages based on water level measurements and the
+presence of obstructions, in terms of:
+2.1. recall score (x̄ %);
+2.2. precision (x̄%);
+2.3. data rate (x̄ bits/s);
+2.4. electrical power consumption (x̄ Watts); and
+2.5. alert response time (x̄ seconds)?
+16
+
+========== PAGE 18 ==========
+3. Is there a statistically significant difference between the AHHH Blockage
+System and the Standardized Hardware Benchmark System (SHBS) across
+the experimental conditions in terms of:
+3.1. recall score (x̄ %);
+3.2. precision (x̄%);
+3.3. data rate (x̄ bits/s);
+3.4. electrical power consumption (x̄ Watts); and
+3.5. alert response time (x̄ seconds)?
+Hypotheses
+Detection Efficacy: Recall Score
+H There is no statistically significant difference in the mean Recall
+O 1
+Score of the AHHH Blockage System and the SHBS.
+H There is a statistically significant difference in the mean Recall Score
+A 1
+of the AHHH Blockage System and the SHBS.
+Detection Efficacy: Precision
+H There is no statistically significant difference in the mean Precision
+O 2
+of the AHHH Blockage System and the SHBS.
+H There is a statistically significant difference in the mean Precision of
+A 2
+the AHHH Blockage System and the SHBS.
+17
+
+========== PAGE 19 ==========
+Operational Efficiency: Data Rate
+H There is no statistically significant difference in the mean Average
+O 3
+Data Rate between the AHHH Blockage System and the SHBS.
+H There is a statistically significant difference in the mean Data Rate
+A 3
+between the AHHH Blockage System and the SHBS.
+Operational Efficiency: Electrical Power Consumption
+H There is no statistically significant difference in the mean Electrical
+O 4
+Power Consumption between the AHHH Blockage System and the SHBS.
+H There is a statistically significant difference in the mean Electrical
+A 4
+Power Consumption between the AHHH Blockage System and the SHBS.
+Responsiveness: Alert Response Time
+H There is no statistically significant difference in the mean Alert
+O 5
+Response Time between the AHHH Blockage System and the SHBS.
+H There is a statistically significant difference in the mean Alert
+A 5
+Response Time between the AHHH Blockage System and the SHBS.
+Scope, Delimitations, and Limitations
+This study develops and assesses an IoT and GIS-based early warning
+system for storm drain blockages, addressing the current lack of effective, real-
+18
+
+========== PAGE 20 ==========
+time monitoring that contributes to increased urban flooding. To combat this issue,
+the study will define the IoT sensors, GIS technology, system designs, and
+performance metrics required for blockage detection, and develop and
+comparatively evaluate two system designs against conventional methods. By
+providing a more effective means of early detection and response, this research
+aims to enhance urban resilience and mitigate flood risks.
+This study evaluates a blockage detection prototype's performance,
+focusing on key indicators: recall score, precision, data rate, electrical power
+consumption, and alert response time, assessed via individual t-tests. Detection
+efficacy, measured as recall and precision scores, assesses the system's ability to
+correctly identify blockages while minimizing both false negatives (recall) and false
+positives (precision). Beyond accuracy, electrical power consumption indicates the
+system's energy efficiency and reflects its operational sustainability. Data
+communication is assessed by the data rate (bits/s), which measures the speed at
+which sensor readings are sent to the central unit. Finally, alert response time
+(seconds) indicates how quickly blockages trigger notifications, gauging
+responsiveness. Statistical significance is evaluated using individual t-tests to
+ensure the reliability of the results.
+To validate the practical application of the prototype, a true experimental
+design will be employed, comparing a fully functional hardware prototype
+developed from Rajput's software-based model with the AHHH Blockage Detection
+System. The system continuously monitors water levels in storm drains using
+19
